@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, ScrollView, TouchableWithoutFeedback, Ima
 import { DataProvider } from "../context/context"
 import { style } from '../theme';
 import { HomeProp, MovieProp } from "../types/stackParams";
+import { fallbackMoviePoster, image185 } from "../api/moviedb";
 
 // dimansional width and height
 const { width, height } = Dimensions.get("window")
@@ -32,12 +33,12 @@ const MovieList = ({navigation}:HomeProp)=>{
               onPress={() => navigation.navigate("Movie", { itemProp: item })}
             >
               <View className="space-y-1 mr-4">
-                <Image source={require("../assets/images/moviePoster2.png")}
+                <Image source={{uri: image185(item.poster_path) || fallbackMoviePoster}}
                   className="rounded-2xl"
                   style={{width: width*0.33, height:height*0.22}}
                 />
                 <Text className="text-neutral-300 ml-1">{
-                movieName.length > 14 ? movieName.slice(0, 14)+"...." : movieName
+                  item.title.length > 14 ? item.title.slice(0, 14) + "...." : item.title
                 }</Text>
               </View>
             </TouchableWithoutFeedback>

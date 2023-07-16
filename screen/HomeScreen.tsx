@@ -1,12 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { Platform, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { HomeProp, MovieProp } from '../types/stackParams';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Octicons, EvilIcons } from '@expo/vector-icons';
 import { style } from '../theme';
 import TrendingMovie from '../components/trendingMovie';
 import MovieList from '../components/MovieList';
 import RateMovie from '../components/RateMovie';
+import { DataProvider } from '../context/context';
+import Loading from '../components/Loading';
 
 const HomeScreen = ({navigation, route}: HomeProp) => {
 
@@ -15,6 +17,8 @@ const HomeScreen = ({navigation, route}: HomeProp) => {
       headerShown: false
     })
   },[])
+
+  const {loading} = useContext(DataProvider)
 
   return (
     <SafeAreaView style={styles.andriodSafeAreaView} className="flex-1 bg-neutral-800">
@@ -26,21 +30,25 @@ const HomeScreen = ({navigation, route}: HomeProp) => {
           <Text className="text-white text-3xl font-bold">
             <Text style={style.text}>M</Text>ovies
             </Text>
-          <TouchableOpacity activeOpacity={0.4}>
+          <TouchableOpacity activeOpacity={0.4} onPress={()=> navigation.navigate("Search")}>
             <EvilIcons name="search" size={30} color="white" />
           </TouchableOpacity>
         </View>
       </View>
-      <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{paddingBottom: 10}}>
-        {/* Trending Movie carousel */}
-        <TrendingMovie navigation={navigation} route={route}/>
-        {/* Upcoming movie carousel */}
-        <MovieList navigation={navigation} route={route}/>
-        {/* Upcoming movie carousel */}
-        <RateMovie navigation={navigation} route={route} />
-      </ScrollView>
+      {loading ? (
+        <Loading/>
+      ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ paddingBottom: 10 }}>
+            {/* Trending Movie carousel */}
+            <TrendingMovie navigation={navigation} route={route} />
+            {/* Upcoming movie carousel */}
+            <MovieList navigation={navigation} route={route} />
+            {/* Upcoming movie carousel */}
+            <RateMovie navigation={navigation} route={route} />
+          </ScrollView>
+      )}
     </SafeAreaView>
   );
 }

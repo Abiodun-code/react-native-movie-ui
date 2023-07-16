@@ -1,7 +1,6 @@
-import { moviesDataProps } from "../types";
-import { personDataProps } from "../types/index";
+import { moviesDataProps, personDataProps } from "../types/index";
 
-export const apiKey = 'place your api key here from : https://www.themoviedb.org';
+export const apiKey = "2a6d729a10e8ac8d22e649dccf3e4091"
 
 
 // this data was used for the development of the app
